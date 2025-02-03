@@ -30,7 +30,7 @@ export interface UserOptions {
   showHidden?: boolean
   vueVersion?: string
   tsVersion?: string
-  elVersion?: string
+  epVersion?: string
 }
 export type SerializeState = Record<string, string> & {
   _o?: UserOptions
@@ -54,16 +54,14 @@ export const useStore = (initial: Initial) => {
 
   const versions = reactive<Versions>({
     vue: saved?._o?.vueVersion ?? 'latest',
-    elementPlus: pr
-      ? 'preview'
-      : saved?._o?.elVersion ?? 'latest',
+    elementPlus: pr ? 'preview' : (saved?._o?.epVersion ?? 'latest'),
     typescript: saved?._o?.tsVersion ?? 'latest',
   })
   const userOptions: UserOptions = pr
     ? {
-      showHidden: true,
-      styleSource: `${prUrl}/index.css`,
-    }
+        showHidden: true,
+        styleSource: `${prUrl}/index.css`,
+      }
     : {}
 
   const hideFile = !IS_DEV && !userOptions.showHidden
@@ -135,10 +133,10 @@ export const useStore = (initial: Initial) => {
     const style = styleSource
       ? styleSource.replace('#VERSION#', version)
       : genCdnLink(
-        nightly.value ? '@element-plus/nightly' : 'element-plus',
-        version,
-        '/dist/index.css',
-      )
+          nightly.value ? '@element-plus/nightly' : 'element-plus',
+          version,
+          '/dist/index.css',
+        )
     const darkStyle = style.replace(
       '/dist/index.css',
       '/theme-chalk/dark/css-vars.css',
@@ -220,7 +218,7 @@ export const useStore = (initial: Initial) => {
         break
       case 'elementPlus':
         versions.elementPlus = version
-        userOptions.elVersion = version
+        userOptions.epVersion = version
         break
       case 'typescript':
         store.typescriptVersion = version
