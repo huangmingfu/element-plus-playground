@@ -63,7 +63,11 @@ export const useStore = (initial: Initial) => {
         styleSource: `${prUrl}/index.css`,
       }
     : {}
-
+  Object.assign(userOptions, {
+    vueVersion: saved?._o?.vueVersion,
+    tsVersion: saved?._o?.tsVersion,
+    epVersion: saved?._o?.epVersion,
+  })
   const hideFile = !IS_DEV && !userOptions.showHidden
 
   const [nightly, toggleNightly] = useToggle(false)
